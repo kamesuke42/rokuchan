@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/var/www/html/
+    ports:
+      - "80:80"
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - rokuchandb:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=rokuchan
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=userpass
+
+volumes:
+  rokuchandb:
